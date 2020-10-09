@@ -9,6 +9,7 @@ function App() {
   const [isProfilePopupOpen, setIsProfilePopupOpen] = React.useState(false);
   const [isPlacePopupOpen, setIsPlacePopupOpen] = React.useState(false);
   const [isAvatarPopupOpen, setIsAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({ isOpen: false });
 
   function handleProfile() {
     setIsProfilePopupOpen(true);
@@ -22,10 +23,20 @@ function App() {
     setIsAvatarPopupOpen(true);
   }
 
+  function handleCard(card) {
+    setSelectedCard({
+      isOpen: true,
+      link: card.link,
+      title: card.name,
+      alt: card.alt,
+    });
+  }
+
   function closeAllPopups() {
     setIsProfilePopupOpen(false);
     setIsPlacePopupOpen(false);
     setIsAvatarPopupOpen(false);
+    setSelectedCard({ isOpen: false });
   }
 
   return (
@@ -35,6 +46,7 @@ function App() {
         onEditProfile={handleProfile}
         onAddPlace={handlePlace}
         onEditAvatar={handleAvatar}
+        onCardClick={handleCard}
       />
       <Footer />
 
@@ -116,7 +128,13 @@ function App() {
         <span className="popup__error" id="link-error"></span>
       </PopupWithForm>
 
-      <ImagePopup />
+      <ImagePopup
+        link={selectedCard.link}
+        title={selectedCard.title}
+        isOpen={selectedCard.isOpen}
+        alt={selectedCard.alt}
+        onClose={closeAllPopups}
+      />
     </div>
   );
 }
