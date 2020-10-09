@@ -22,8 +22,10 @@ function App() {
     setIsAvatarPopupOpen(true);
   }
 
-  function closeHandleProfile() {
+  function closeAllPopups() {
     setIsProfilePopupOpen(false);
+    setIsPlacePopupOpen(false);
+    setIsAvatarPopupOpen(false);
   }
 
   return (
@@ -41,7 +43,7 @@ function App() {
         title={"Редактировать профиль"}
         buttonTitle={"Сохранить"}
         isOpen={isProfilePopupOpen}
-        onClose={closeHandleProfile}
+        onClose={closeAllPopups}
       >
         <input
           required
@@ -65,6 +67,53 @@ function App() {
           className="popup__text popup__text_type_description"
         />
         <span className="popup__error" id="description-error"></span>
+      </PopupWithForm>
+
+      <PopupWithForm
+        name={"image"}
+        title={"Новое место"}
+        buttonTitle={"Сохранить"}
+        isOpen={isPlacePopupOpen}
+        onClose={closeAllPopups}
+      >
+        <input
+          required
+          minLength="1"
+          maxLength="30"
+          autoComplete="off"
+          name="title"
+          type="text"
+          placeholder="Название"
+          className="popup__text popup__text_type_title"
+        />
+        <span className="popup__error" id="title-error"></span>
+        <input
+          required
+          autoComplete="off"
+          name="link"
+          type="url"
+          placeholder="Ссылка на картинку"
+          className="popup__text popup__text_type_link"
+        />
+        <span className="popup__error" id="link-error"></span>
+      </PopupWithForm>
+
+      <PopupWithForm
+        name={"avatar"}
+        title={"Обновить аватар"}
+        buttonTitle={"Сохранить"}
+        isOpen={isAvatarPopupOpen}
+        onClose={closeAllPopups}
+      >
+        <input
+          required
+          name="link"
+          type="url"
+          placeholder="Ссылка на картинку"
+          className="popup__text popup__text_type_link"
+          id="link-input"
+        />
+        <span className="popup__error" id="link-error"></span>
       </PopupWithForm>
 
       <ImagePopup />
