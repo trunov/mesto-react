@@ -1,7 +1,7 @@
 import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({ src, alt, title, likes, owner, id, onCardClick }) {
+function Card({ src, alt, title, likes, owner, id, onCardClick, onCardLike }) {
   const currentUser = React.useContext(CurrentUserContext);
 
   const card = {
@@ -26,6 +26,10 @@ function Card({ src, alt, title, likes, owner, id, onCardClick }) {
     onCardClick({ link: src, name: title });
   }
 
+  function handleLike() {
+    onCardLike(card);
+  }
+
   return (
     <li className="cards__element">
       <img
@@ -42,6 +46,7 @@ function Card({ src, alt, title, likes, owner, id, onCardClick }) {
             className={likeButton}
             type="button"
             title="Нравится"
+            onClick={handleLike}
           ></button>
           <p className="cards__element-like">{likes.length}</p>
         </div>

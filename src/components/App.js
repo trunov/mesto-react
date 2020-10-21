@@ -42,7 +42,7 @@ function App() {
   function setupCards(cards) {
     setCards(
       cards.map((item) => ({
-        id: item._id,
+        _id: item._id,
         link: item.link,
         name: item.name,
         owner: item.owner,
@@ -54,9 +54,23 @@ function App() {
   function handleUpdateUser({ name, description }) {
     api
       .editProfile({ name, description })
-      .then((result) => { 
+      .then((result) => {
         setCurrentUser(result);
         closeAllPopups();
+      })
+      .catch((err) => console.log(`Error ${err}`));
+  }
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
+        const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
+
+        setCards(newCards);
       })
       .catch((err) => console.log(`Error ${err}`));
   }
@@ -89,6 +103,7 @@ function App() {
           onEditAvatar={handleAvatar}
           onCardClick={handleCard}
           cards={cards}
+          onCardLike={handleCardLike}
         />
         <Footer />
 

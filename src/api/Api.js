@@ -56,25 +56,9 @@ class Api {
     });
   }
 
-  addLike(cardId) {
+  changeLikeCardStatus(cardId, isLiked) {
     return fetch(`${this._url}/cards/likes/${cardId}`, {
-      method: "PUT",
-      headers: {
-        authorization: this._authorization,
-        "Content-Type": this._contentType,
-      },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
-  }
-
-  deleteLike(cardId) {
-    return fetch(`${this._url}/cards/likes/${cardId}`, {
-      method: "DELETE",
+      method: isLiked ? "PUT" : "DELETE",
       headers: {
         authorization: this._authorization,
         "Content-Type": this._contentType,
