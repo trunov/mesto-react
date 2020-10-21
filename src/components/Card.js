@@ -1,7 +1,17 @@
 import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({ src, alt, title, likes, owner, id, onCardClick, onCardLike }) {
+function Card({
+  src,
+  alt,
+  title,
+  likes,
+  owner,
+  id,
+  onCardClick,
+  onCardLike,
+  onCardDelete,
+}) {
   const currentUser = React.useContext(CurrentUserContext);
 
   const card = {
@@ -30,6 +40,10 @@ function Card({ src, alt, title, likes, owner, id, onCardClick, onCardLike }) {
     onCardLike(card);
   }
 
+  function handleDelete() {
+    onCardDelete(card);
+  }
+
   return (
     <li className="cards__element">
       <img
@@ -38,7 +52,12 @@ function Card({ src, alt, title, likes, owner, id, onCardClick, onCardLike }) {
         alt={alt}
         onClick={handleClick}
       />
-      <button className={deleteButton} type="button" title="Удалить"></button>
+      <button
+        className={deleteButton}
+        type="button"
+        title="Удалить"
+        onClick={handleDelete}
+      ></button>
       <div className="cards__description">
         <h2 className="cards__element-title">{title}</h2>
         <div className="cards__element-wrap">
