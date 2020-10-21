@@ -16,6 +16,7 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({ isOpen: false });
 
   const [currentUser, setCurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([]);
 
   function handleProfile() {
     setIsProfilePopupOpen(true);
@@ -36,6 +37,18 @@ function App() {
       title: card.name,
       alt: card.alt,
     });
+  }
+
+  function setupCards(cards) {
+    setCards(
+      cards.map((item) => ({
+        id: item._id,
+        link: item.link,
+        name: item.name,
+        owner: item.owner,
+        likes: item.likes,
+      }))
+    );
   }
 
   function handleUpdateUser({ name, description }) {
@@ -61,6 +74,7 @@ function App() {
     Promise.all(promises)
       .then((results) => {
         setCurrentUser(results[0]);
+        setupCards(results[1]);
       })
       .catch((err) => console.log(`Error ${err}`));
   }, []);
@@ -74,6 +88,7 @@ function App() {
           onAddPlace={handlePlace}
           onEditAvatar={handleAvatar}
           onCardClick={handleCard}
+          cards={cards}
         />
         <Footer />
 

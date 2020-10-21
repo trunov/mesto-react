@@ -1,8 +1,26 @@
 import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card({ src, alt, title, likes, onCardClick }) {
+function Card({ src, alt, title, likes, owner, id, onCardClick }) {
   const currentUser = React.useContext(CurrentUserContext);
+
+  const card = {
+    _id: id,
+    link: src,
+    name: title,
+    owner: owner,
+    likes: likes,
+  };
+
+  const isOwn = card.owner._id === currentUser._id;
+  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+  const deleteButton = `cards__element-remove ${
+    isOwn ? "" : "cards__element-remove_hidden"
+  }`;
+  const likeButton = `cards__element-button ${
+    isLiked ? "cards__element-button_active" : ""
+  }`;
 
   function handleClick() {
     onCardClick({ link: src, name: title });
@@ -16,16 +34,12 @@ function Card({ src, alt, title, likes, onCardClick }) {
         alt={alt}
         onClick={handleClick}
       />
-      <button
-        className="cards__element-remove"
-        type="button"
-        title="Удалить"
-      ></button>
+      <button className={deleteButton} type="button" title="Удалить"></button>
       <div className="cards__description">
         <h2 className="cards__element-title">{title}</h2>
         <div className="cards__element-wrap">
           <button
-            className="cards__element-button"
+            className={likeButton}
             type="button"
             title="Нравится"
           ></button>
