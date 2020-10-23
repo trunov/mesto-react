@@ -5,6 +5,7 @@ import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 import { api } from "../api/Api";
 
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -80,8 +81,18 @@ function App() {
       .deleteCard(card._id)
       .then(() => {
         const newCards = cards.filter((c) => c._id !== card._id);
-    
+
         setCards(newCards);
+      })
+      .catch((err) => console.log(`Error ${err}`));
+  }
+
+  function handleUpdateAvatar({ link }) {
+    api
+      .editAvatar({ link })
+      .then((result) => {
+        setCurrentUser(result);
+        closeAllPopups();
       })
       .catch((err) => console.log(`Error ${err}`));
   }
@@ -154,23 +165,11 @@ function App() {
           <span className="popup__error" id="link-error"></span>
         </PopupWithForm>
 
-        <PopupWithForm
-          name={"avatar"}
-          title={"Обновить аватар"}
-          buttonTitle={"Сохранить"}
+        <EditAvatarPopup
           isOpen={isAvatarPopupOpen}
           onClose={closeAllPopups}
-        >
-          <input
-            required
-            name="link"
-            type="url"
-            placeholder="Ссылка на картинку"
-            className="popup__text popup__text_type_link"
-            id="link-input"
-          />
-          <span className="popup__error" id="link-error"></span>
-        </PopupWithForm>
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
         <ImagePopup
           link={selectedCard.link}
