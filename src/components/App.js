@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Main from "./Main";
-import PopupWithForm from "./PopupWithForm";
+import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -97,6 +97,16 @@ function App() {
       .catch((err) => console.log(`Error ${err}`));
   }
 
+  function handleAddPlaceSubmit({ name, link }) {
+    api
+      .addNewCard({ name, link })
+      .then((newCard) => {
+        setCards([newCard, ...cards]); 
+        closeAllPopups();
+      })
+      .catch((err) => console.log(`Error ${err}`));
+  }
+
   function closeAllPopups() {
     setIsProfilePopupOpen(false);
     setIsPlacePopupOpen(false);
@@ -136,34 +146,11 @@ function App() {
           onUpdateUser={handleUpdateUser}
         />
 
-        <PopupWithForm
-          name={"image"}
-          title={"Новое место"}
-          buttonTitle={"Сохранить"}
+        <AddPlacePopup
           isOpen={isPlacePopupOpen}
           onClose={closeAllPopups}
-        >
-          <input
-            required
-            minLength="1"
-            maxLength="30"
-            autoComplete="off"
-            name="title"
-            type="text"
-            placeholder="Название"
-            className="popup__text popup__text_type_title"
-          />
-          <span className="popup__error" id="title-error"></span>
-          <input
-            required
-            autoComplete="off"
-            name="link"
-            type="url"
-            placeholder="Ссылка на картинку"
-            className="popup__text popup__text_type_link"
-          />
-          <span className="popup__error" id="link-error"></span>
-        </PopupWithForm>
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
         <EditAvatarPopup
           isOpen={isAvatarPopupOpen}
